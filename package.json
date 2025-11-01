@@ -1,6 +1,16 @@
 {
   "name": "@slimpleton13/ts-guid",
   "version": "1.0.0",
+  "description": "Lightweight GUID Implementation for Typescript",
+  "keywords": [
+    "type",
+    "guid",
+    "node",
+    "typescript"
+  ],
+  "license": "MIT",
+  "main": "index.ts",
+  "author": "Daniel Gione",
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.9.2",
