@@ -15,7 +15,7 @@ function isExactGuid(value: string): value is Guid {
 }
 
 /**
- * Attempts to parse the normalized {@link value} with loose Guid format {@link _EXACT_GUID_FORMAT}
+ * Attempts to parse the {@link value} with loose Guid format {@link _EXACT_GUID_FORMAT}
  * @param value string to parse
  * @returns Valid Normalized GUID
  */
