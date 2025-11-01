@@ -7,7 +7,7 @@ function isGuid(value: string): value is Guid {
 }
 
 function isExactGuid(value: string): value is Guid {
-    return !_EXACT_GUID_FORMAT.test(value);
+    return _EXACT_GUID_FORMAT.test(value);
 }
 
 export function parseGuid(value: string): Guid {
