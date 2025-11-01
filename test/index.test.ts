@@ -66,3 +66,37 @@ describe("Guid utilities", () => {
         });
     });
 });
+
+describe("Guid capitalization comparisons", () => {
+    it("should pass equality for differently capitalized GUIDs", () => {
+        const guid1 = parseGuid("123e4567-e89b-12d3-a456-426614174000");
+        const guid2 = parseGuid("123E4567-E89B-12D3-A456-426614174000");
+
+        expect(guid1).toBe(guid2);
+    });
+});
+
+describe("Guid hyphen comparisons", () => {
+    it("should fail parseExactGuid for GUIDs missing hyphens", () => {
+        const guidNoHyphens = "123e4567e89b12d3a456426614174000";
+
+        expect(() => parseExactGuid(guidNoHyphens)).toThrow("Invalid guid received");
+
+        // parseGuid (looser) should accept it
+        expect(() => parseGuid(guidNoHyphens)).not.toThrow();
+    });
+
+    it("should fail parseExactGuid for GUIDs with hyphens in wrong positions", () => {
+        // Insert hyphens incorrectly
+        const guidWrongHyphens = "123e-4567-e89b12-d3a45642-6614174000";
+
+        expect(() => parseExactGuid(guidWrongHyphens)).toThrow("Invalid guid received");
+        expect(() => parseGuid(guidWrongHyphens)).toThrow("Invalid guid received");
+    });
+
+    it("should accept GUIDs with all hyphens in the correct positions", () => {
+        const guidCorrect = "123e4567-e89b-12d3-a456-426614174000";
+        expect(() => parseExactGuid(guidCorrect)).not.toThrow();
+        expect(() => parseGuid(guidCorrect)).not.toThrow();
+    });
+});
