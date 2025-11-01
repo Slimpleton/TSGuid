@@ -22,5 +22,9 @@ function parseExactGuid(value: string): Guid {
     return value;
 }
 
+function createRandomGuid(): Guid {
+    return parseExactGuid(crypto.randomUUID())
+}
+
 export type { Guid };
-export { parseExactGuid, parseGuid };
+export { parseExactGuid, parseGuid, createRandomGuid };
