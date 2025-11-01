@@ -25,6 +25,21 @@ function parseGuid(value: string): Guid {
     return normalizeValue(value);
 }
 
+
+/**
+ * Attempts to parse the {@link value} with loose Guid format {@link _EXACT_GUID_FORMAT}
+ * @param value string to parse
+ * @returns Valid Normalized GUID or {@link undefined}
+ */
+function tryParseGuid(value: string): Guid | undefined {
+    try {
+        return parseGuid(value);
+    } catch {
+        return undefined;
+    }
+}
+
+
 /**
  * Attempts to parse the {@link value} with strict Guid format {@link _EXACT_GUID_FORMAT}
  * @param value string to parse
@@ -42,4 +57,4 @@ function createRandomGuid(): Guid {
 }
 
 export type { Guid };
-export { parseExactGuid, parseGuid, createRandomGuid };
+export { parseExactGuid, parseGuid, createRandomGuid, tryParseGuid };
