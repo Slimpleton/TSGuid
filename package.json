@@ -1,5 +1,5 @@
 {
-  "name": "ts-guid",
+  "name": "@slimpleton13/ts-guid",
   "version": "1.0.0",
   "devDependencies": {
     "@types/jest": "^30.0.0",
