@@ -1,4 +1,4 @@
-import { createRandomGuid, parseExactGuid, parseGuid } from "../src";
+import { createRandomGuid, parseExactGuid, parseGuid, tryParseGuid } from "../src";
 
 describe("Guid utilities", () => {
     describe("parseGuid", () => {
@@ -162,6 +162,39 @@ describe("Guid edge cases", () => {
                 const normalized = parseGuid(guid);
                 expect(normalized).toMatch(/^[0-9a-f]{32}$/);
             }
+        });
+    });
+
+    describe('tryParseGuid', () => {
+        it('should return a normalized GUID for valid GUID string', () => {
+            const raw = '550e8400-e29b-41d4-a716-446655440000';
+            const result = tryParseGuid(raw);
+
+            expect(result).toBeDefined();
+            expect(result).toEqual(parseExactGuid(raw)); // matches the exact normalized format
+        });
+
+        it('should return undefined for invalid GUID string', () => {
+            const invalid = 'not-a-guid';
+            const result = tryParseGuid(invalid);
+
+            expect(result).toBeUndefined();
+        });
+
+        it('should handle uppercase GUIDs correctly', () => {
+            const raw = '550E8400-E29B-41D4-A716-446655440000';
+            const result = tryParseGuid(raw);
+
+            expect(result).toBeDefined();
+            expect(result).toEqual(parseExactGuid(raw)); // normalized to lowercase & dash-free
+        });
+
+        it('should handle GUIDs without dashes', () => {
+            const raw = '550e8400e29b41d4a716446655440000';
+            const result = tryParseGuid(raw);
+
+            expect(result).toBeDefined();
+            expect(result).toEqual(parseGuid(raw));
         });
     });
 });

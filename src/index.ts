@@ -2,15 +2,15 @@ type Guid = string & { readonly __brand: unique symbol };
 const _CHAR_CHECK: RegExp = /^[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}$/;
 const _EXACT_GUID_FORMAT: RegExp = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}?$/;
 
-function normalizeValue<T extends string | Guid>(s: T): T {
+function _normalizeValue<T extends string | Guid>(s: T): T {
     return s.replace(/-/g, "").toLowerCase() as T;
 }
 
-function isGuid(value: string): value is Guid {
+function _isGuid(value: string): value is Guid {
     return _CHAR_CHECK.test(value);
 }
 
-function isExactGuid(value: string): value is Guid {
+function _isExactGuid(value: string): value is Guid {
     return _EXACT_GUID_FORMAT.test(value);
 }
 
@@ -20,9 +20,9 @@ function isExactGuid(value: string): value is Guid {
  * @returns Valid Normalized GUID
  */
 function parseGuid(value: string): Guid {
-    if (!isGuid(value))
+    if (!_isGuid(value))
         throw new Error('Invalid guid received');
-    return normalizeValue(value);
+    return _normalizeValue(value);
 }
 
 
@@ -47,13 +47,17 @@ function tryParseGuid(value: string): Guid | undefined {
  */
 function parseExactGuid(value: string): Guid {
     value = value.toLowerCase();
-    if (!isExactGuid(value))
+    if (!_isExactGuid(value))
         throw new Error('Invalid guid received');
-    return normalizeValue(value);
+    return _normalizeValue(value);
 }
 
+/**
+ * Creates a random UUID using {@link crypto.randomUUID} and normalizes it
+ * @returns Random {@link Guid}
+ */
 function createRandomGuid(): Guid {
-    return normalizeValue(parseExactGuid(crypto.randomUUID()));
+    return _normalizeValue(parseExactGuid(crypto.randomUUID()));
 }
 
 export type { Guid };
