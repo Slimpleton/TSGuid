@@ -1,6 +1,6 @@
 {
   "name": "@slimpleton13/ts-guid",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lightweight GUID Implementation for Typescript",
   "keywords": [
     "type",

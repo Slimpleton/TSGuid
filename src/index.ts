@@ -11,19 +11,21 @@ function isExactGuid(value: string): value is Guid {
 }
 
 function parseGuid(value: string): Guid {
+    value = value.toLowerCase();
     if (!isGuid(value))
         throw new Error('Invalid guid received');
     return value;
 }
 
 function parseExactGuid(value: string): Guid {
+    value = value.toLowerCase();
     if (!isExactGuid(value))
         throw new Error('Invalid guid received');
     return value;
 }
 
 function createRandomGuid(): Guid {
-    return parseExactGuid(crypto.randomUUID())
+    return parseExactGuid(crypto.randomUUID().toLowerCase())
 }
 
 export type { Guid };
