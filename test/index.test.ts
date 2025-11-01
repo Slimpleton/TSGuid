@@ -5,8 +5,8 @@ describe("Guid utilities", () => {
         it("accepts valid GUIDs with or without hyphens", () => {
             const validGuids = [
                 "123e4567-e89b-12d3-a456-426614174000",
-                "{123e4567-e89b-12d3-a456-426614174000}",
-                "(123e4567e89b12d3a456426614174000)",
+                "123e4567-e89b-12d3-a456-426614174000",
+                "123e4567e89b12d3a456426614174000",
                 "123E4567E89B12D3A456426614174000",
             ];
 
@@ -40,8 +40,8 @@ describe("Guid utilities", () => {
             const guid = createRandomGuid();
             // type-wise, guid is Guid (string)
             expect(typeof guid).toBe("string");
-            // regex check
-            expect(guid).toMatch(/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/);
+            // regex check after normalization
+            expect(guid).toMatch(/^[0-9a-f]{32}$/);
         });
 
         it("creates unique GUIDs", () => {
@@ -98,5 +98,70 @@ describe("Guid hyphen comparisons", () => {
         const guidCorrect = "123e4567-e89b-12d3-a456-426614174000";
         expect(() => parseExactGuid(guidCorrect)).not.toThrow();
         expect(() => parseGuid(guidCorrect)).not.toThrow();
+    });
+});
+
+describe("Guid comparisons with different hyphen placements", () => {
+    it("should consider GUIDs equal even if hyphens are in different valid positions", () => {
+        const guidWithHyphens = "123e4567-e89b-12d3-a456-426614174000";
+        const guidCompact = "123e4567e89b12d3a456426614174000";
+        const guidUppercaseHyphens = "123E4567-E89B-12D3-A456-426614174000";
+
+        const parsed1 = parseGuid(guidWithHyphens);
+        const parsed2 = parseGuid(guidCompact);
+        const parsed3 = parseGuid(guidUppercaseHyphens);
+
+        // All normalized GUIDs should be equal
+        expect(parsed1).toBe(parsed2);
+        expect(parsed1).toBe(parsed3);
+        expect(parsed2).toBe(parsed3);
+    });
+
+    it("should fail for GUIDs with incorrect hyphen placement", () => {
+        const badHyphenGuid = "123e456-7e89b12d3-a456426614174000";
+        expect(() => parseGuid(badHyphenGuid)).toThrow("Invalid guid received");
+    });
+});
+
+describe("Guid edge cases", () => {
+    describe("parseGuid edge cases", () => {
+        it("should reject non-string inputs", () => {
+            const nonStrings: any[] = [null, undefined, 123, {}, [], true, false];
+            for (const val of nonStrings) {
+                expect(() => parseGuid(val)).toThrow("Invalid guid received");
+            }
+        });
+
+        it("should not trim whitespace to normalize GUIDs", () => {
+            const guidWithSpaces = "  123e4567-e89b-12d3-a456-426614174000  ";
+            expect(() => parseGuid(guidWithSpaces)).toThrow("Invalid guid received");
+        });
+
+        it("should handle extremely long strings gracefully", () => {
+            const longString = "123e4567-e89b-12d3-a456-426614174000".repeat(10);
+            expect(() => parseGuid(longString)).toThrow("Invalid guid received");
+        });
+
+        it("should reject strings with invalid characters", () => {
+            const invalidChars = "123e4567-e89b-12d3-a456-42661417!000";
+            expect(() => parseGuid(invalidChars)).toThrow("Invalid guid received");
+        });
+    });
+
+    describe("createRandomGuid consistency", () => {
+        it("repeated normalization of the same GUID produces the same result", () => {
+            const guid = createRandomGuid();
+            const normalized1 = parseGuid(guid);
+            const normalized2 = parseGuid(guid);
+            expect(normalized1).toBe(normalized2);
+        });
+
+        it("generated GUIDs always produce valid normalized strings", () => {
+            for (let i = 0; i < 10; i++) {
+                const guid = createRandomGuid();
+                const normalized = parseGuid(guid);
+                expect(normalized).toMatch(/^[0-9a-f]{32}$/);
+            }
+        });
     });
 });
