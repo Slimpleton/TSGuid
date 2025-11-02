@@ -1,6 +1,6 @@
 {
   "name": "@slimpleton13/ts-guid",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Lightweight GUID Implementation for Typescript",
   "keywords": [
     "type",
@@ -23,8 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git:https://github.com/Slimpleton/TSGuid.git"
+    "url": "https://github.com/Slimpleton/TSGuid.git"
   },
+  "bugs": {
+    "url": "https://github.com/Slimpleton/TSGuid/issues"
+  },
+  "homepage": "https://github.com/Slimpleton/TSGuid#readme",
   "scripts": {
     "test": "jest --passWithNoTests"
   }
