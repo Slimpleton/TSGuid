@@ -1,6 +1,6 @@
 {
   "name": "@slimpleton/ts-guid",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Lightweight GUID Implementation for Typescript",
   "keywords": [
     "type",
@@ -31,7 +31,7 @@
   "homepage": "https://github.com/Slimpleton/TSGuid#readme",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "publish:npm": "npm publish --registry https://registry.npmjs.org/",
+    "publish:npm": "npm publish --registry https://registry.npmjs.org/ --access public",
     "publish:github": "npm publish --registry=https://npm.pkg.github.com",
     "publish:both": "npm run publish:npm && npm run publish:github"
   },
