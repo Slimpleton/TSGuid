@@ -27,7 +27,7 @@ function parseGuid(value: string): Guid {
 
 
 /**
- * Attempts to parse the {@link value} with loose Guid format {@link _EXACT_GUID_FORMAT}
+ * Attempts to parse the {@link value} with Guid format {@link _EXACT_GUID_FORMAT}
  * @param value string to parse
  * @returns Valid Normalized GUID or {@link undefined}
  */
