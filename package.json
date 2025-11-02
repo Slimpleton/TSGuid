@@ -1,6 +1,6 @@
 {
   "name": "@slimpleton/ts-guid",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Lightweight GUID Implementation for Typescript",
   "keywords": [
     "type",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Slimpleton/TSGuid.git"
+    "url": "git+https://github.com/Slimpleton/TSGuid.git"
   },
   "bugs": {
     "url": "https://github.com/Slimpleton/TSGuid/issues"
@@ -31,9 +31,11 @@
   "homepage": "https://github.com/Slimpleton/TSGuid#readme",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "publish:both": "npm publish --registry https://registry.npmjs.org/ && npm publish --registry https://npm.pkg.github.com"
+    "publish:npm": "npm publish --registry https://registry.npmjs.org/",
+    "publish:github": "npm publish --registry=https://npm.pkg.github.com",
+    "publish:both": "npm run publish:npm && npm run publish:github"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org/"
   }
 }
