@@ -29,10 +29,13 @@ export class Xyz{
 
 ```
 
-
 ## Methods Included
  | Method | Description|
  |---|---|
  | createRandomGuid(): Guid| Creates a random Guid using crypto.randomUUID() and returns it strictly typed|
  | parseGuid(val: string): Guid| Attempts to parse the value with loose Guid format|
  | parseExactGuid(val: string): Guid| Attempts to parse the value with strict Guid format|
+
+### ESLINTER USERS
+This comes with an extension to the ruleset that is Highly Recommended to prevent runtime 'as-casting' to Guid
+'no-as-guid':'error'
