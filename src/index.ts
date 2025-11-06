@@ -1,37 +1,56 @@
-type Guid = string & { readonly __brand: unique symbol };
-const _CHAR_CHECK: RegExp = /^[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}$/;
-const _EXACT_GUID_FORMAT: RegExp = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}?$/;
+type Guid<V extends UUIDVersion = UUIDVersion> = string & { readonly __brand: unique symbol; readonly __uuidVersion: V };
+type UUIDVersion = 4 | 5 | 6 | 7;
 
-function _normalizeValue<T extends string | Guid>(s: T): T {
-    return s.replace(/-/g, "").toLowerCase() as T;
+// Specific UUID types
+type UUIDv4 = Guid<4>;
+type UUIDv5 = Guid<5>;
+type UUIDv6 = Guid<6>;
+type UUIDv7 = Guid<7>;
+
+// Union type for any UUID
+type UUID = UUIDv4 | UUIDv5 | UUIDv6 | UUIDv7;
+
+const UUID_REGEX: Record<UUIDVersion, RegExp> = {
+    4: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    5: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-5[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    6: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-6[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+    7: /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-7[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/,
+};
+
+
+function _normalizeValue<T extends string>(s: T): T {
+    // Only handle UUIDs without dashes
+    if (s.length === 32) {
+        const normalizedChars = new Array(36);
+
+        // Positions where dashes go
+        const dashPositions = [8, 13, 18, 23];
+        let srcIndex = 0;
+
+        for (let i = 0; i < 36; i++) {
+            if (dashPositions.includes(i)) {
+                normalizedChars[i] = '-';
+            } else {
+                normalizedChars[i] = s[srcIndex++].toLowerCase();
+            }
+        }
+
+        return normalizedChars.join('') as T;
+    }
+
+    return s.toLowerCase() as T;
 }
 
-function _isGuid(value: string): value is Guid {
-    return _CHAR_CHECK.test(value);
-}
-
-function _isExactGuid(value: string): value is Guid {
-    return _EXACT_GUID_FORMAT.test(value);
+function _isGuid<V extends UUIDVersion>(value: string, version: UUIDVersion): value is Guid<V> {
+    return UUID_REGEX[version].test(value);
 }
 
 /**
- * Attempts to parse the {@link value} with loose Guid format {@link _EXACT_GUID_FORMAT}
- * @param value string to parse
- * @returns Valid Normalized GUID
- */
-function parseGuid(value: string): Guid {
-    if (!_isGuid(value))
-        throw new Error('Invalid guid received');
-    return _normalizeValue(value);
-}
-
-
-/**
- * Attempts to parse the {@link value} with Guid format {@link _EXACT_GUID_FORMAT}
+ * Attempts to parse the {@link value} with Guid format {@link _UUID_V4_FORMAT}
  * @param value string to parse
  * @returns Valid Normalized GUID or {@link undefined}
  */
-function tryParseGuid(value: string): Guid | undefined {
+function tryParseGuid<V extends UUIDVersion>(value: string): Guid<V> | undefined {
     try {
         return parseGuid(value);
     } catch {
@@ -41,24 +60,24 @@ function tryParseGuid(value: string): Guid | undefined {
 
 
 /**
- * Attempts to parse the {@link value} with strict Guid format {@link _EXACT_GUID_FORMAT}
+ * Attempts to parse the {@link value} with strict Guid format {@link _UUID_V4_FORMAT}
  * @param value string to parse
  * @returns Valid Normalized GUID
  */
-function parseExactGuid(value: string): Guid {
-    value = value.toLowerCase();
-    if (!_isExactGuid(value))
+function parseGuid<V extends UUIDVersion>(value: string, version: UUIDVersion = 4): Guid<V> {
+    console.log(value, version);
+    if (!_isGuid(value, version))
         throw new Error('Invalid guid received');
-    return _normalizeValue(value);
+    return _normalizeValue(value) as Guid<V>;
 }
 
 /**
  * Creates a random UUID using {@link crypto.randomUUID} and normalizes it
  * @returns Random {@link Guid}
  */
-function createRandomGuid(): Guid {
-    return _normalizeValue(parseExactGuid(crypto.randomUUID()));
+function createRandomGuid(): UUIDv4 {
+    return _normalizeValue(parseGuid(crypto.randomUUID())) as UUIDv4;
 }
 
-export type { Guid };
-export { parseExactGuid, parseGuid, createRandomGuid, tryParseGuid };
+export type { UUID };
+export { parseGuid, createRandomGuid, tryParseGuid };
