@@ -33,14 +33,14 @@ export class Xyz{
 ## Types Included
 | Type | Description|
 |---|---|
-| UUID| Generic type encompassing all versions of UUID available|
+| UUID| Generic type encompassing all versions of Guid&lt;UUIDVersion&gt; available|
 | UUIDVersion| Currently supported versions of UUID for parsing by library (4-7)|
 
 ## Methods Included
  | Method | Description|
  |---|---|
  | createRandomGuid(): UUIDv4| Creates a random Guid using crypto.randomUUID() and returns it strictly typed|
- | parseGuid(val: string, version: UUIDVersion = 4): Guid<UUIDVersion>| Attempts to parse the value with loose Guid format|
+ | parseGuid(val: string, version: UUIDVersion = 4): Guid&lt;UUIDVersion&gt; | Attempts to parse the value with versioned UUID format|
 
 
 ### ESLINTER USERS
