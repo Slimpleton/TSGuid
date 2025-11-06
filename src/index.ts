@@ -61,7 +61,6 @@ function tryParseGuid<V extends UUIDVersion>(value: string): Guid<V> | undefined
  * @returns Valid Normalized GUID
  */
 function parseGuid<V extends UUIDVersion>(value: string, version: UUIDVersion = 4): Guid<V> {
-    console.log(value, version);
     if (!_isGuid(value, version))
         throw new Error('Invalid guid received');
     return _normalizeValue(value) as Guid<V>;
