@@ -6,7 +6,7 @@ Uses types not classes to be more lightweight / reusable
 ### Installation
 
 ```
-npm i @slimpleton13/ts-guid --save
+npm i @slimpleton/ts-guid --save
 ```
 
 ### Basic Usage
