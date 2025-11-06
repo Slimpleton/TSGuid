@@ -46,9 +46,9 @@ function _isGuid<V extends UUIDVersion>(value: string, version: UUIDVersion): va
  * @param value string to parse
  * @returns Valid Normalized GUID or {@link undefined}
  */
-function tryParseGuid<V extends UUIDVersion>(value: string): Guid<V> | undefined {
+function tryParseGuid(value: string, version: UUIDVersion = 4): Guid<UUIDVersion> | undefined {
     try {
-        return parseGuid(value);
+        return parseGuid(value, version);
     } catch {
         return undefined;
     }
@@ -60,10 +60,10 @@ function tryParseGuid<V extends UUIDVersion>(value: string): Guid<V> | undefined
  * @param value string to parse
  * @returns Valid Normalized GUID
  */
-function parseGuid<V extends UUIDVersion>(value: string, version: UUIDVersion = 4): Guid<V> {
+function parseGuid(value: string, version: UUIDVersion = 4): Guid<UUIDVersion> {
     if (!_isGuid(value, version))
         throw new Error('Invalid guid received');
-    return _normalizeValue(value) as Guid<V>;
+    return _normalizeValue(value);
 }
 
 /**
@@ -71,7 +71,7 @@ function parseGuid<V extends UUIDVersion>(value: string, version: UUIDVersion = 
  * @returns Random {@link Guid}
  */
 function createRandomGuid(): UUIDv4 {
-    return _normalizeValue(parseGuid(crypto.randomUUID())) as UUIDv4;
+    return _normalizeValue(parseGuid(crypto.randomUUID(), 4)) as UUIDv4;
 }
 
 export type { UUID, UUIDVersion };
