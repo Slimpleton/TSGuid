@@ -1,12 +1,19 @@
 {
   "name": "@slimpleton/ts-guid",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Lightweight GUID Implementation for Typescript",
   "keywords": [
     "type",
     "guid",
-    "node",
-    "typescript"
+    "typescript",
+    "uuid",
+    "rfc9562",
+    "id",
+    "brands",
+    "database",
+    "minimal",
+    "lightweight",
+    "nodependencies"
   ],
   "license": "MIT",
   "main": "index.ts",
