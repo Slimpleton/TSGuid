@@ -1,5 +1,5 @@
 module.exports = {
   rules: {
-    'no-as-guid': require('./no-as-guid'),
+    'no-as-uuid': require('./no-as-uuid'),
   },
 };

@@ -28,14 +28,10 @@ function _normalizeValue<T extends string>(s: T): T {
         let srcIndex = 0;
 
         for (let i = 0; i < 36; i++) {
-            if (dashPositions.includes(i)) {
-                normalizedChars[i] = '-';
-            } else {
-                normalizedChars[i] = s[srcIndex++].toLowerCase();
-            }
+            normalizedChars[i] = dashPositions.includes(i) ? '-' : s[srcIndex++].toLowerCase();
         }
 
-        return normalizedChars.join('') as T;
+        return normalizedChars.join() as T;
     }
 
     return s.toLowerCase() as T;
@@ -79,5 +75,5 @@ function createRandomGuid(): UUIDv4 {
     return _normalizeValue(parseGuid(crypto.randomUUID())) as UUIDv4;
 }
 
-export type { UUID };
+export type { UUID, UUIDVersion };
 export { parseGuid, createRandomGuid, tryParseGuid };

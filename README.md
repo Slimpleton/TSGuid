@@ -13,29 +13,37 @@ npm i @slimpleton13/ts-guid --save
 
 ```typescript
 export class Xyz{
-    public id: Guid;
+    public id: UUID;
     constructor(){
         this.id = createRandomGuid();
     }
     //or
-    constructor(id: string){
+
+    constructor(id: `${string}-${string}-${string}-${string}-${string}`){
         this.id = parseGuid(id);
     }
-    //or
-    constructor(id: `${string}-${string}-${string}-${string}-${string}`){
-        this.id = parseExactGuid(id);
+
+    // or
+    constructor(id: `${string}-${string}-${string}-${string}-${string}`, version: UUIDVersion){
+        this.id = parseGuid(id, version);
     }
 }
 
 ```
+## Types Included
+| Type | Description|
+|---|---|
+| UUID| Generic type encompassing all versions of UUID available|
+| UUIDVersion| Currently supported versions of UUID for parsing by library (4-7)|
+|
 
 ## Methods Included
  | Method | Description|
  |---|---|
- | createRandomGuid(): Guid| Creates a random Guid using crypto.randomUUID() and returns it strictly typed|
- | parseGuid(val: string): Guid| Attempts to parse the value with loose Guid format|
- | parseExactGuid(val: string): Guid| Attempts to parse the value with strict Guid format|
+ | createRandomGuid(): UUIDv4| Creates a random Guid using crypto.randomUUID() and returns it strictly typed|
+ | parseGuid(val: string, version: UUIDVersion = 4): Guid<UUIDVersion>| Attempts to parse the value with loose Guid format|
+ | 
 
 ### ESLINTER USERS
 This comes with an extension to the ruleset that is Highly Recommended to prevent runtime 'as-casting' to Guid
-'no-as-guid':'error'
+'no-as-uuid':'error'

@@ -13,12 +13,12 @@ module.exports = {
           node.typeAnnotation &&
           node.typeAnnotation.type === 'TSTypeReference' &&
           node.typeAnnotation.typeName.type === 'Identifier' &&
-          node.typeAnnotation.typeName.name === 'Guid'
+          node.typeAnnotation.typeName.name === 'UUID'
         ) {
           context.report({
             node,
             message:
-              'Do not cast to Guid using "as". Use parseGuid or parseExactGuid instead.',
+              'Do not cast to UUID using "as". Use parseGuid instead.',
           });
         }
       },
