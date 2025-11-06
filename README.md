@@ -35,14 +35,13 @@ export class Xyz{
 |---|---|
 | UUID| Generic type encompassing all versions of UUID available|
 | UUIDVersion| Currently supported versions of UUID for parsing by library (4-7)|
-|
 
 ## Methods Included
  | Method | Description|
  |---|---|
  | createRandomGuid(): UUIDv4| Creates a random Guid using crypto.randomUUID() and returns it strictly typed|
  | parseGuid(val: string, version: UUIDVersion = 4): Guid<UUIDVersion>| Attempts to parse the value with loose Guid format|
- | 
+
 
 ### ESLINTER USERS
 This comes with an extension to the ruleset that is Highly Recommended to prevent runtime 'as-casting' to Guid
